@@ -11,7 +11,11 @@ void display(struct node *head)
 {
     while (head != NULL)
     {
-        printf("%d\n", head->data);
+        printf(" %d ", head->data);
+        if (head->next != NULL)
+        {
+            printf("->");
+        }
         head = head->next;
     }
 }
@@ -25,7 +29,7 @@ void search(struct node *head)
     {
         if (head->data == val)
         {
-            printf("value exists at position no. %d", count);
+            printf("value exists at position no. : %d", count);
             break;
         }
         else if (head->next == NULL)
@@ -116,7 +120,7 @@ struct node *update(struct node *head)
     return dummy;
 }
 
-void deleteExceptLast(struct node *head)
+void deleteExceptFirst(struct node *head)
 {
     struct node *dummy, *p;
     int delVal;
@@ -148,9 +152,12 @@ struct node *deleteFirst(struct node *head)
 
 int main()
 {
+
     struct node *head = malloc(sizeof(struct node));
     struct node *second = malloc(sizeof(struct node));
     struct node *third = malloc(sizeof(struct node));
+    struct node *fourth = malloc(sizeof(struct node));
+    struct node *fifth = malloc(sizeof(struct node));
     struct node *temp;
 
     head->data = 13;
@@ -160,29 +167,69 @@ int main()
     second->next = third;
 
     third->data = 73;
-    third->next = NULL;
+    third->next = fourth;
 
-    display(head);
+    fourth->data = 10;
+    fourth->next = fifth;
 
-    // search(head);
+    fifth->data = 34;
+    fifth->next = NULL;
 
-    // insertLast(head);
-    // display(head);
+    int option;
 
-    // insertBetween(head);
-    // display(head);
+    do
+    {
+        printf("\n1. Display\n");
+        printf("2. Insert from last\n");
+        printf("3. Insert in between\n");
+        printf("4. Insert in begin\n");
+        printf("5. Update\n");
+        printf("6. Delete except first\n");
+        printf("7. Delete first\n");
+        printf("8. Search\n");
+        printf("enter operation you want to perform : ");
+        scanf("%d", &option);
+        switch (option)
+        {
+        case 1:
+            display(head);
+            break;
 
-    // head = insertBegin(head);
-    // display(head);
+        case 2:
+            insertLast(head);
+            display(head);
+            break;
 
-    // head = update(head);
-    // display(head);
+        case 3:
+            insertBetween(head);
+            display(head);
+            break;
 
-    // deleteExceptLast(head);
-    // display(head);
+        case 4:
+            head = insertBegin(head);
+            display(head);
+            break;
 
-    // head = deleteFirst(head);
-    // display(head);
+        case 5:
+            head = update(head);
+            display(head);
+            break;
+
+        case 6:
+            deleteExceptFirst(head);
+            display(head);
+            break;
+
+        case 7:
+            head = deleteFirst(head);
+            display(head);
+            break;
+
+        case 8:
+            search(head);
+            break;
+        }
+    } while (option >= 1 && option < 9);
 
     return 0;
 }

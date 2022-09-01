@@ -84,6 +84,7 @@ struct node *insertNode(struct node *root, int val)
         }
     }
 }
+
 struct node *isExist(struct node *root, int val)
 {
     struct node *dummy = root;
@@ -105,9 +106,55 @@ struct node *isExist(struct node *root, int val)
     return NULL;
 }
 
+struct node *updateNode(struct node *root, int val, int newVal)
+{
+    struct node *dummy = root;
+
+    while (dummy != NULL)
+    {
+        if (dummy->data == val)
+        {
+
+            dummy->data = newVal;
+            break;
+        }
+        else if (dummy->data < val)
+        {
+            dummy = dummy->right;
+        }
+        else
+        {
+            dummy = dummy->left;
+        }
+    }
+    return NULL;
+}
+
+struct node *deleteLeafNode(struct node *root, int val)
+{
+    struct node *dummy = root;
+    while (dummy != NULL)
+    {
+        if (dummy->data = val)
+        {
+            free(dummy);
+            break;
+        }
+        else if (dummy->data < val)
+        {
+            dummy = dummy->right;
+        }
+        else
+        {
+            dummy = dummy->left;
+        }
+    }
+    return NULL;
+}
+
 void main()
 {
-    int val;
+    int val, newVal;
     struct node *root = insert(27);
     struct node *val1 = insert(13);
     struct node *val2 = insert(73);
@@ -123,35 +170,86 @@ void main()
     val2->left = val5;
     val2->right = val6;
 
-    // preOrder(root);
-    // postOrder(root);
-    // inOrder(root);
+    int option;
 
-    // insertNode(root);
+    do
+    {
+        printf("1. Sorted Array\n");
+        printf("2. Value exist or not\n");
+        printf("3. Insert\n");
+        printf("4. Update\n");
+        printf("5. Delete\n");
+        printf("enter operation you want to perform : ");
+        scanf("%d", &option);
+        switch (option)
+        {
+        case 1:
+            inOrder(root);
+            // preOrder(root);
+            // postOrder(root);
+            break;
 
-    // printf("enter value you want to search : ");
-    // scanf("%d", &val);
-    // struct node *temp = isExist(root, val);
-    // if (temp == NULL)
-    // {
-    //     printf("element not found.");
-    // }
-    // else
-    // {
-    //     printf("element found : %d", temp);
-    // }
+        case 2:
+            printf("enter value you want to search : ");
+            scanf("%d", &val);
+            struct node *temp2 = isExist(root, val);
+            if (temp2 == NULL)
+            {
+                printf("element not found.");
+                break;
+            }
+            else
+            {
+                printf("element found : %d", temp2->data);
+                break;
+            }
+        case 3:
+            printf("enter value you want to insert : ");
+            scanf("%d", &val);
 
-    // printf("enter value you want to insert : ");
-    // scanf("%d", &val);
+            insertNode(root, val);
+            struct node *temp = isExist(root, val);
+            if (temp == NULL)
+            {
+                printf("element not found.");
+                break;
+            }
+            else
+            {
+                printf("element found : %d", temp->data);
+                break;
+            }
+        case 4:
+            printf("enter value you want to update : ");
+            scanf("%d", &val);
+            printf("enter new value : ");
+            scanf("%d", &newVal);
+            struct node *temp3 = isExist(root, newVal);
+            updateNode(root, val, newVal);
+            if (temp3 == NULL)
+            {
+                printf("element not found.");
+                break;
+            }
+            else
+            {
+                printf("element found : %d", temp3->data);
+                break;
+            }
+        case 5:
+            printf("enter value you want to delete : ");
+            scanf("%d", &val);
+            deleteLeafNode(root, val);
 
-    // insertNode(root, val);
-    // struct node *temp = isExist(root, val);
-    // if (temp == NULL)
-    // {
-    //     printf("element not found.");
-    // }
-    // else
-    // {
-    //     printf("element found : %d", temp->data);
-    // }
+            struct node *temp4 = isExist(root, val);
+            if (temp4 == NULL)
+            {
+                printf("element not found.");
+            }
+            else
+            {
+                printf("element found : %d", temp4->data);
+            }
+        }
+    } while (option >= 1 && option <= 9);
 }
