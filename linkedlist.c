@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int val;
 struct node
 {
     int data;
@@ -9,6 +10,10 @@ struct node
 
 void display(struct node *head)
 {
+    if (head == NULL)
+    {
+        printf("----Linkedlist is empty----");
+    }
     while (head != NULL)
     {
         printf(" %d ", head->data);
@@ -20,19 +25,18 @@ void display(struct node *head)
     }
 }
 
-void search(struct node *head)
+struct node *search(struct node *head, int val)
 {
-    int val, count = 1;
-    printf("enter value you want to search : ");
-    scanf("%d", &val);
-    while (head != NULL)
+    int count = 1;
+    struct node *dummy = head;
+    while (dummy != NULL)
     {
-        if (head->data == val)
+        if (dummy->data == val)
         {
             printf("value exists at position no. : %d", count);
             break;
         }
-        else if (head->next == NULL)
+        else if (dummy->next == NULL)
         {
             printf("value not exists.");
         }
@@ -40,8 +44,9 @@ void search(struct node *head)
         {
             count++;
         }
-        head = head->next;
+        dummy = dummy->next;
     }
+    return dummy;
 }
 
 void insertLast(struct node *head)
@@ -66,13 +71,13 @@ void insertBetween(struct node *head)
 {
     int val1, val2;
     struct node *dummy = head;
-    printf("kai value pachhi insert krvu 6e e value : ");
+    printf("After which value you want to insert : ");
     scanf("%d", &val1);
     while (dummy->data != val1)
     {
         dummy = dummy->next;
     }
-    printf("kai value insert krvi 6e e : ");
+    printf("The value you would like to insert : ");
     scanf("%d", &val2);
 
     struct node *between = malloc(sizeof(struct node));
@@ -104,18 +109,13 @@ struct node *update(struct node *head)
     int upd, newupd;
     dummy = head;
 
-    printf("kai value update krvi 6e e : ");
+    printf("Which value do you want to update : ");
     scanf("%d", &upd);
 
-    while (dummy->data != upd)
-    {
-        dummy = dummy->next;
-    }
-
-    printf("navi value : ");
+    printf("The value you would like to update : ");
     scanf("%d", &newupd);
 
-    dummy->data = newupd;
+    dummy->next->data = newupd;
 
     return dummy;
 }
@@ -150,31 +150,26 @@ struct node *deleteFirst(struct node *head)
     return head;
 }
 
+struct node *insert(struct node *head)
+{
+    // printf("inside next %d\n", head->data);
+    if (head->data == '\0')
+    {
+        printf("Insert value you want : ");
+        scanf("%d", &val);
+        head->data = val;
+        head->next = NULL;
+        printf("Inserted value : %d", head->data);
+        return head;
+    }
+}
+
 int main()
 {
-
     struct node *head = malloc(sizeof(struct node));
-    struct node *second = malloc(sizeof(struct node));
-    struct node *third = malloc(sizeof(struct node));
-    struct node *fourth = malloc(sizeof(struct node));
-    struct node *fifth = malloc(sizeof(struct node));
     struct node *temp;
-
-    head->data = 13;
-    head->next = second;
-
-    second->data = 27;
-    second->next = third;
-
-    third->data = 73;
-    third->next = fourth;
-
-    fourth->data = 10;
-    fourth->next = fifth;
-
-    fifth->data = 34;
-    fifth->next = NULL;
-
+    head->data = '\0';
+    head->next = NULL;
     int option;
 
     do
@@ -187,12 +182,14 @@ int main()
         printf("6. Delete except first\n");
         printf("7. Delete first\n");
         printf("8. Search\n");
+        printf("9. Insert linkedlist emptye\n");
         printf("enter operation you want to perform : ");
         scanf("%d", &option);
         switch (option)
         {
+
         case 1:
-            display(head);
+            display(temp);
             break;
 
         case 2:
@@ -207,7 +204,7 @@ int main()
 
         case 4:
             head = insertBegin(head);
-            display(head);
+            // display(head);
             break;
 
         case 5:
@@ -226,10 +223,18 @@ int main()
             break;
 
         case 8:
-            search(head);
+            printf("enter value you want to search : ");
+            scanf("%d", &val);
+            search(head, val);
+            break;
+
+        case 9:
+            // ***insert***
+
+            temp = insert(head);
             break;
         }
-    } while (option >= 1 && option < 9);
+    } while (option >= 1 && option <= 9);
 
     return 0;
 }

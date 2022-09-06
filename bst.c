@@ -174,7 +174,7 @@ void main()
 
     do
     {
-        printf("1. Sorted Array\n");
+        printf("\n1. Sorted Array\n");
         printf("2. Value exist or not\n");
         printf("3. Insert\n");
         printf("4. Update\n");
