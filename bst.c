@@ -10,7 +10,11 @@ struct node
 struct node *insert(int val)
 {
     struct node *temp = malloc(sizeof(struct node));
-    temp->data = val;
+
+    printf("enter value you want to insert : ");
+    scanf("%d", &temp->data);
+
+    // temp->data = val;
     temp->left = temp->right = NULL;
     return temp;
 }
@@ -30,12 +34,14 @@ struct node *preOrder(struct node *root)
 struct node *inOrder(struct node *root)
 {
     struct node *dummy = root;
+
     if (dummy != NULL)
     {
         inOrder(dummy->left);
-        printf("%d ", dummy->data);
+        printf("%d -> ", dummy->data);
         inOrder(dummy->right);
     }
+
     return dummy;
 }
 
@@ -54,6 +60,15 @@ struct node *postOrder(struct node *root)
 struct node *insertNode(struct node *root, int val)
 {
     struct node *dummy = root;
+
+    if (dummy->left == NULL && dummy->right == NULL && dummy->data == '\0')
+    {
+        dummy->data = val;
+        dummy->left = NULL;
+        dummy->right = NULL;
+        return dummy;
+    }
+
     while (1)
     {
         if (dummy->data > val)
@@ -85,7 +100,7 @@ struct node *insertNode(struct node *root, int val)
     }
 }
 
-struct node *isExist(struct node *root, int val)
+struct node *search(struct node *root, int val)
 {
     struct node *dummy = root;
     while (dummy != NULL)
@@ -116,6 +131,7 @@ struct node *updateNode(struct node *root, int val, int newVal)
         {
 
             dummy->data = newVal;
+            printf("value updated successully.");
             break;
         }
         else if (dummy->data < val)
@@ -133,6 +149,9 @@ struct node *updateNode(struct node *root, int val, int newVal)
 struct node *deleteLeafNode(struct node *root, int val)
 {
     struct node *dummy = root;
+    if (dummy == NULL)
+        return dummy;
+
     while (dummy != NULL)
     {
         if (dummy->data = val)
@@ -155,63 +174,41 @@ struct node *deleteLeafNode(struct node *root, int val)
 void main()
 {
     int val, newVal;
-    struct node *root = insert(27);
-    struct node *val1 = insert(13);
-    struct node *val2 = insert(73);
-    struct node *val3 = insert(10);
-    struct node *val4 = insert(20);
-    struct node *val5 = insert(50);
-    struct node *val6 = insert(100);
-
-    root->left = val1;
-    root->right = val2;
-    val1->left = val3;
-    val1->right = val4;
-    val2->left = val5;
-    val2->right = val6;
+    struct node *root;
+    root->left = root->right = NULL;
 
     int option;
 
     do
     {
-        printf("\n1. Sorted Array\n");
-        printf("2. Value exist or not\n");
-        printf("3. Insert\n");
-        printf("4. Update\n");
-        printf("5. Delete\n");
+        printf("\n1. Insert\n");
+        printf("2. preorder\n");
+        printf("3. inorder\n");
+        printf("4. postorder\n");
+        printf("5. Search\n");
+        printf("6. Update\n");
+        printf("7. Delete\n");
+        printf("8. Exit\n");
         printf("enter operation you want to perform : ");
         scanf("%d", &option);
-        switch (option)
+        if (option == 8)
         {
-        case 1:
-            inOrder(root);
-            // preOrder(root);
-            // postOrder(root);
             break;
+        }
+        switch (option)
 
-        case 2:
-            printf("enter value you want to search : ");
-            scanf("%d", &val);
-            struct node *temp2 = isExist(root, val);
-            if (temp2 == NULL)
-            {
-                printf("element not found.");
-                break;
-            }
-            else
-            {
-                printf("element found : %d", temp2->data);
-                break;
-            }
-        case 3:
+        {
+
+        case 1:
+
             printf("enter value you want to insert : ");
             scanf("%d", &val);
 
             insertNode(root, val);
-            struct node *temp = isExist(root, val);
+            struct node *temp = search(root, val);
             if (temp == NULL)
             {
-                printf("element not found.");
+                printf("element %d not found.", val);
                 break;
             }
             else
@@ -219,37 +216,51 @@ void main()
                 printf("element found : %d", temp->data);
                 break;
             }
+
+        case 2:
+            preOrder(root);
+            break;
+
+        case 3:
+
+            inOrder(root);
+            break;
+
         case 4:
+            postOrder(root);
+            break;
+
+        case 5:
+
+            printf("enter value you want to search : ");
+            scanf("%d", &val);
+            struct node *temp2 = search(root, val);
+            if (temp2 == NULL)
+            {
+                printf("element %d not found.", val);
+                break;
+            }
+            else
+            {
+                printf("element found : %d", temp2->data);
+                break;
+            }
+
+        case 6:
+
             printf("enter value you want to update : ");
             scanf("%d", &val);
             printf("enter new value : ");
             scanf("%d", &newVal);
-            struct node *temp3 = isExist(root, newVal);
+            struct node *temp3 = search(root, newVal);
             updateNode(root, val, newVal);
-            if (temp3 == NULL)
-            {
-                printf("element not found.");
-                break;
-            }
-            else
-            {
-                printf("element found : %d", temp3->data);
-                break;
-            }
-        case 5:
+            break;
+
+        case 7:
+
             printf("enter value you want to delete : ");
             scanf("%d", &val);
             deleteLeafNode(root, val);
-
-            struct node *temp4 = isExist(root, val);
-            if (temp4 == NULL)
-            {
-                printf("element not found.");
-            }
-            else
-            {
-                printf("element found : %d", temp4->data);
-            }
         }
-    } while (option >= 1 && option <= 9);
+    } while (option >= 1);
 }
