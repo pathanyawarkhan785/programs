@@ -1,29 +1,122 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int val;
 struct node
 {
-    int data;
+    int teleNum;
+    char name[20];
     struct node *next;
 };
 
 void display(struct node *head)
 {
-    if (head == NULL)
+    struct node *dummy = head;
+    while (dummy != NULL)
     {
-        printf("----Linkedlist is empty----");
-    }
-    while (head != NULL)
-    {
-        printf(" %d ", head->data);
-        if (head->next != NULL)
+        printf("(Name : %s , Telephone : %d)", dummy->name, dummy->teleNum);
+        if (dummy->next != NULL)
         {
             printf("->");
         }
-        head = head->next;
+        dummy = dummy->next;
     }
 }
+
+struct node *insertBegin(struct node *head)
+{
+    int teleNum;
+    char name[20];
+    struct node *dummy = head;
+    struct node *first = malloc(sizeof(struct node));
+
+    printf("Enter name : ");
+    scanf("%s", first->name);
+
+    printf("Enter telephone : ");
+    scanf("%d", &first->teleNum);
+
+    first->next = dummy;
+
+    return first;
+}
+
+void insertBetween(struct node *head)
+{
+    int val1, val2, val3;
+    struct node *dummy = head;
+    printf("After which telephone number you want to insert : ");
+    scanf("%d", &val1);
+    while (dummy->teleNum != val1)
+    {
+        dummy = dummy->next;
+    }
+    struct node *between = malloc(sizeof(struct node));
+
+    printf("Telephone : ");
+    scanf("%d", &between->teleNum);
+
+    printf("Name : ");
+    scanf("%s", between->name);
+
+    between->next = dummy->next;
+    dummy->next = between;
+    // printf("Telephone number = %d and Name = %s inserted.\n", between->teleNum, between->name);
+}
+
+void insertLast(struct node *head)
+{
+    struct node *dummy = head;
+    while (dummy->next != NULL)
+    {
+        dummy = dummy->next;
+    }
+    struct node *last = malloc(sizeof(struct node));
+    printf("Telephone : ");
+    scanf("%d", &last->teleNum);
+    printf("Name : ");
+    scanf("%s", last->name);
+    last->next = NULL;
+    dummy->next = last;
+    printf("%d inserted successfully.\n", last->teleNum);
+}
+
+struct node *updateTele(struct node *head)
+{
+    struct node *dummy = head;
+    int upd;
+
+    printf("Which telephone number do you want to update : ");
+    scanf("%d", &upd);
+
+    while (dummy->teleNum != upd)
+    {
+        dummy = dummy->next;
+    }
+
+    printf("New telephone number : ");
+    scanf("%d", &dummy->teleNum);
+
+    return dummy;
+}
+
+// struct node *updateName(struct node *head, char oldName)
+// {
+//     struct node *dummy = head;
+//     char newName[20];
+
+//     while (dummy->name != oldName)
+//     {
+//         printf("%s", dummy->name);
+//         dummy = dummy->next;
+//     }
+
+//     printf("New Name : ");
+//     scanf("%s", &newName);
+
+//     return dummy;
+// }
 
 struct node *search(struct node *head, int val)
 {
@@ -31,14 +124,14 @@ struct node *search(struct node *head, int val)
     struct node *dummy = head;
     while (dummy != NULL)
     {
-        if (dummy->data == val)
+        if (dummy->teleNum == val)
         {
-            printf("value exists at position no. : %d", count);
+            printf("telephone number exists at position no. : %d", count);
             break;
         }
         else if (dummy->next == NULL)
         {
-            printf("value not exists.");
+            printf("telephone number not exists.");
         }
         else
         {
@@ -49,77 +142,6 @@ struct node *search(struct node *head, int val)
     return dummy;
 }
 
-void insertLast(struct node *head)
-{
-    int val;
-    struct node *dummy;
-    dummy = head;
-    printf("enter value you want to insert from last : ");
-    scanf("%d", &val);
-    while (dummy->next != NULL)
-    {
-        dummy = dummy->next;
-    }
-    struct node *last = malloc(sizeof(struct node));
-    last->data = val;
-    last->next = NULL;
-    dummy->next = last;
-    printf("%d inserted successfully.\n", last->data);
-}
-
-void insertBetween(struct node *head)
-{
-    int val1, val2;
-    struct node *dummy = head;
-    printf("After which value you want to insert : ");
-    scanf("%d", &val1);
-    while (dummy->data != val1)
-    {
-        dummy = dummy->next;
-    }
-    printf("The value you would like to insert : ");
-    scanf("%d", &val2);
-
-    struct node *between = malloc(sizeof(struct node));
-
-    between->data = val2;
-    between->next = dummy->next;
-    dummy->next = between;
-    printf("%d inserted after %d.\n", val2, val1);
-}
-
-struct node *insertBegin(struct node *head)
-{
-    int val;
-    struct node *dummy = head;
-    struct node *first = malloc(sizeof(struct node));
-
-    printf("enter val : ");
-    scanf("%d", &val);
-
-    first->next = dummy;
-    first->data = val;
-
-    return first;
-}
-
-struct node *update(struct node *head)
-{
-    struct node *dummy;
-    int upd, newupd;
-    dummy = head;
-
-    printf("Which value do you want to update : ");
-    scanf("%d", &upd);
-
-    printf("The value you would like to update : ");
-    scanf("%d", &newupd);
-
-    dummy->next->data = newupd;
-
-    return dummy;
-}
-
 void deleteExceptFirst(struct node *head)
 {
     struct node *dummy, *p;
@@ -127,10 +149,10 @@ void deleteExceptFirst(struct node *head)
 
     dummy = head;
 
-    printf("enter value to delete : ");
+    printf("enter telephone number you want to delete : ");
     scanf("%d", &delVal);
 
-    while (dummy->next->data != delVal)
+    while (dummy->next->teleNum != delVal)
     {
         dummy = dummy->next;
     }
@@ -150,50 +172,36 @@ struct node *deleteFirst(struct node *head)
     return head;
 }
 
-struct node *insert(struct node *head)
-{
-    // printf("inside next %d\n", head->data);
-    if (head->data == '\0')
-    {
-        printf("Insert value you want : ");
-        scanf("%d", &val);
-        head->data = val;
-        head->next = NULL;
-        printf("Inserted value : %d", head->data);
-        return head;
-    }
-}
-
 int main()
 {
     struct node *head = malloc(sizeof(struct node));
     struct node *temp;
-    head->data = '\0';
-    head->next = NULL;
+    head = NULL;
     int option;
 
     do
     {
         printf("\n1. Display\n");
-        printf("2. Insert from last\n");
-        printf("3. Insert in between\n");
-        printf("4. Insert in begin\n");
-        printf("5. Update\n");
-        printf("6. Delete except first\n");
-        printf("7. Delete first\n");
-        printf("8. Search\n");
-        printf("9. Insert linkedlist emptye\n");
+        printf("2. Insert from begin\n");
+        printf("3. Insert from between\n");
+        printf("4. Insert from last\n");
+        printf("5. Update Telephone\n");
+        printf("6. Update Name\n");
+        printf("7. Delete except first\n");
+        printf("8. Delete first\n");
+        printf("9. Search\n");
         printf("enter operation you want to perform : ");
         scanf("%d", &option);
         switch (option)
         {
 
         case 1:
-            display(temp);
+            display(head);
             break;
 
         case 2:
-            insertLast(head);
+
+            head = insertBegin(head);
             display(head);
             break;
 
@@ -203,35 +211,37 @@ int main()
             break;
 
         case 4:
-            head = insertBegin(head);
-            // display(head);
+            insertLast(head);
+            display(head);
             break;
 
         case 5:
-            head = update(head);
+            head = updateTele(head);
             display(head);
             break;
 
         case 6:
+            // char oldName[20];
+            // printf("enter which name you want to update : ");
+            // scanf("%s", &oldName);
+            // head = updateName(head, oldName);
+            // display(head);
+            break;
+
+        case 7:
             deleteExceptFirst(head);
             display(head);
             break;
 
-        case 7:
+        case 8:
             head = deleteFirst(head);
             display(head);
             break;
 
-        case 8:
-            printf("enter value you want to search : ");
+        case 9:
+            printf("enter telephone number you want to search : ");
             scanf("%d", &val);
             search(head, val);
-            break;
-
-        case 9:
-            // ***insert***
-
-            temp = insert(head);
             break;
         }
     } while (option >= 1 && option <= 9);
