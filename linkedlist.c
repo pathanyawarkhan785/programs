@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int val;
 struct node
@@ -13,6 +12,11 @@ struct node
 void display(struct node *head)
 {
     struct node *dummy = head;
+    if (dummy == NULL)
+    {
+        printf("linkedlist is empty.");
+        return;
+    }
     while (dummy != NULL)
     {
         printf("(Name : %s , Telephone : %d)", dummy->name, dummy->teleNum);
@@ -186,10 +190,9 @@ int main()
         printf("3. Insert from between\n");
         printf("4. Insert from last\n");
         printf("5. Update Telephone\n");
-        printf("6. Update Name\n");
-        printf("7. Delete except first\n");
-        printf("8. Delete first\n");
-        printf("9. Search\n");
+        printf("6. Delete except first\n");
+        printf("7. Delete first\n");
+        printf("8. Search\n");
         printf("enter operation you want to perform : ");
         scanf("%d", &option);
         switch (option)
@@ -220,7 +223,7 @@ int main()
             display(head);
             break;
 
-        case 6:
+            // case 6:
             // char oldName[20];
             // printf("enter which name you want to update : ");
             // scanf("%s", &oldName);
@@ -228,23 +231,23 @@ int main()
             // display(head);
             break;
 
-        case 7:
+        case 6:
             deleteExceptFirst(head);
             display(head);
             break;
 
-        case 8:
+        case 7:
             head = deleteFirst(head);
             display(head);
             break;
 
-        case 9:
+        case 8:
             printf("enter telephone number you want to search : ");
             scanf("%d", &val);
             search(head, val);
             break;
         }
-    } while (option >= 1 && option <= 9);
+    } while (option >= 1);
 
     return 0;
 }
